@@ -36,7 +36,7 @@ function main() {
   // new scene
   const scene = new THREE.Scene();
 
-  //lights
+  // Directional light 1
 
   const color = 0xffffff;
   const intensity = 3;
@@ -44,10 +44,24 @@ function main() {
   light.position.set(-1, 2, 4);
   scene.add(light);
 
-  const directionalLight2 = new THREE.DirectionalLight(color, intensity);
-  directionalLight2.position.set(0, 10, -10);
-  directionalLight2.rotation.set(0, 180, 0);
-  scene.add(directionalLight2);
+  // const directionalLight2 = new THREE.DirectionalLight(color, intensity);
+  // directionalLight2.position.set(0, 10, -10);
+  // directionalLight2.rotation.set(0, 180, 0);
+  // scene.add(directionalLight2);
+
+  // Ambient light
+  const ambientLightColor = 0xffff00; // Light yellow
+  const ambientLightIntensity = 1;
+  const ambientLight = new THREE.AmbientLight(ambientLightColor, ambientLightIntensity);
+  scene.add(ambientLight);
+
+  // Hemisphere light
+  const skyColor = 0x00bfff; // Light blue
+  const groundColor = 0xb97a20; // Brown
+  const hemisphereLightIntensity = 1;
+  const hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, hemisphereLightIntensity);
+  scene.add(hemisphereLight);
+  
 
   // geometry
   const boxWidth = 1;
@@ -101,10 +115,69 @@ function main() {
 
     // Add the floor
     const floorGeometry = new THREE.BoxGeometry(30, 0.1, 30); // Width, height, depth
-    const floorMaterial = new THREE.MeshPhongMaterial({ color: 0x006400 }); // Gray color
+    const floorMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); // Gray color
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.position.set(0, -0.5, 0); // Adjust the position to place it at the bottom
     scene.add(floor);
+
+
+
+// Add trees
+function addTree(position) {
+  const trunkColor = 0xD2B48C; // Light brown
+  const leavesColor = 0x228B22; // Dark green
+  
+  // Trunk (cylinder)
+  const trunkGeometry = new THREE.CylinderGeometry(0.3, 0.3, 3, 8); // Adjust size and segments as needed
+  const trunkMaterial = new THREE.MeshPhongMaterial({ color: trunkColor });
+  const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+  trunk.position.copy(position);
+  scene.add(trunk);
+  
+  // Leaves (cone)
+  const leavesGeometry = new THREE.ConeGeometry(2, 3, 10); // Adjust size and segments as needed
+  const leavesMaterial = new THREE.MeshPhongMaterial({ color: leavesColor });
+  const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
+  leaves.position.set(position.x, position.y + 2, position.z); // Adjust the position to place leaves on top of the trunk
+  scene.add(leaves);
+}
+
+// Add trees in the area
+
+// back side
+addTree(new THREE.Vector3(-14, 1, -14)); 
+addTree(new THREE.Vector3(-9, 1, -14)); 
+addTree(new THREE.Vector3(-4, 1, -14)); 
+addTree(new THREE.Vector3(1, 1, -14)); 
+addTree(new THREE.Vector3(6, 1, -14)); 
+addTree(new THREE.Vector3(11, 1, -14)); 
+
+// right side
+addTree(new THREE.Vector3(13, 1, -9)); 
+addTree(new THREE.Vector3(13, 1, -4)); 
+addTree(new THREE.Vector3(13, 1, 1)); 
+addTree(new THREE.Vector3(13, 1, 6)); 
+addTree(new THREE.Vector3(13, 1, 11)); 
+
+// left side
+addTree(new THREE.Vector3(-14, 1, -9)); 
+addTree(new THREE.Vector3(-14, 1, -4)); 
+addTree(new THREE.Vector3(-14, 1, 1)); 
+addTree(new THREE.Vector3(-14, 1, 6)); 
+addTree(new THREE.Vector3(-14, 1, 11)); 
+
+// front side
+addTree(new THREE.Vector3(-10, 1, 13)); 
+addTree(new THREE.Vector3(-4, 1, 13));
+addTree(new THREE.Vector3(2, 1, 13));
+addTree(new THREE.Vector3(8, 1, 13));
+
+
+
+
+
+
+  
 
   // Load 3D model
 
@@ -124,13 +197,17 @@ function main() {
     });
   });
 
+
   function initializeCat(root) {
-    root.position.set(0, -0.4, 0);
-    root.scale.set(0.1, 0.1, 0.1);
+    root.position.set(0, -0.4, -2);
+    root.scale.set(0.05, 0.05, 0.05);
     root.rotation.set(-Math.PI / 2, 0, 0); // Rotate the cat to stand on the floor
     scene.add(root);
     cat = root;
   }
+
+
+
 
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
