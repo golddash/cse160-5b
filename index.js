@@ -6,7 +6,13 @@ import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
 function main() {
   // canvas
   const canvas = document.querySelector("#c");
-  const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+  //const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    canvas,
+    alpha: true,
+  });
 
   renderer.setPixelRatio(window.devicePixelRatio * 2); // Increase pixel ratio for higher resolution
   // Adjust antialiasing quality
@@ -93,6 +99,13 @@ function main() {
   cylinder.position.set(0, 1, -5);
   scene.add(cylinder);
 
+    // Add the floor
+    const floorGeometry = new THREE.BoxGeometry(30, 0.1, 30); // Width, height, depth
+    const floorMaterial = new THREE.MeshPhongMaterial({ color: 0x006400 }); // Gray color
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.position.set(0, -0.5, 0); // Adjust the position to place it at the bottom
+    scene.add(floor);
+
   // Load 3D model
 
   console.log("hello");
@@ -112,9 +125,9 @@ function main() {
   });
 
   function initializeCat(root) {
-    root.position.set(0, 0, 0);
-    root.scale.set(0.5, 0.5, 0.5);
-    root.rotation.set(0, 180, 0);
+    root.position.set(0, -0.4, 0);
+    root.scale.set(0.1, 0.1, 0.1);
+    root.rotation.set(-Math.PI / 2, 0, 0); // Rotate the cat to stand on the floor
     scene.add(root);
     cat = root;
   }
@@ -141,14 +154,14 @@ function main() {
       camera.updateProjectionMatrix();
     }
 
-    cubes.forEach(function (cube, index) {
-      const speed = 1 + index * 0.1;
-      const rotation = time * speed;
-      cube.rotation.x = rotation;
-      cube.rotation.y = rotation;
-    });
+    // cubes.forEach(function (cube, index) {
+    //   const speed = 1 + index * 0.1;
+    //   const rotation = time * speed;
+    //   cube.rotation.x = rotation;
+    //   cube.rotation.y = rotation;
+    // });
 
-    if (cat) cat.rotation.y += 0.01;
+    //if (cat) cat.rotation.y += 0.01;
 
     renderer.render(scene, camera);
 
