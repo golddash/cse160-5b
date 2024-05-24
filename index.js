@@ -44,21 +44,16 @@ function main() {
   light.position.set(-1, 2, 4);
   scene.add(light);
 
-  // const directionalLight2 = new THREE.DirectionalLight(color, intensity);
-  // directionalLight2.position.set(0, 10, -10);
-  // directionalLight2.rotation.set(0, 180, 0);
-  // scene.add(directionalLight2);
-
   // Ambient light
   const ambientLightColor = 0xffff00; // Light yellow
-  const ambientLightIntensity = 1;
+  const ambientLightIntensity = 3;
   const ambientLight = new THREE.AmbientLight(ambientLightColor, ambientLightIntensity);
   scene.add(ambientLight);
 
   // Hemisphere light
   const skyColor = 0x00bfff; // Light blue
   const groundColor = 0xb97a20; // Brown
-  const hemisphereLightIntensity = 1;
+  const hemisphereLightIntensity = 3;
   const hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, hemisphereLightIntensity);
   scene.add(hemisphereLight);
   
